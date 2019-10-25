@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.PaddingMatterMapper" >
+	<!-- 这个元素可以被用来定义可重用的 SQL 代码段，可以包含在其他语句中-->
+	<sql id="pdMatterColumns"> </sql>
+	
+    <insert id="addPaddingMatter" parameterType="PaddingMatter">
+    	insert into padding_matter
+    	values(#{id},#{date},#{title},#{type},#{linkId},#{checkById},#{projectId},#{status})
+    </insert>
+    <select id="getCount" parameterType="string" resultType="map">
+    	select count(*) num from padding_matter
+    	where check_by_id=#{userId}
+    	and status=1
+    	
+    </select>
+    <select id="getMatters" parameterType="string" resultType="PaddingMatter">
+    	select * from padding_matter
+    	where check_by_id=#{userId}
+    	and status=1
+    	order by date desc
+    	
+    </select>
+    <update id="updateMatter" parameterType="string">
+    	update padding_matter
+    	set status=0
+    	where link_id=#{linkId}
+    </update>
+</mapper>

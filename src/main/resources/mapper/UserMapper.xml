@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.UserMapper" >
+	<!-- 这个元素可以被用来定义可重用的 SQL 代码段，可以包含在其他语句中-->
+	<sql id="userColumns"> user_id,position,pwd,name,gender,age,
+	tel,email,id_card,head_portrait,dept_no</sql>
+	
+    <select id="getUser" parameterType="map" resultType="User">
+    	select <include refid="userColumns"/>  
+    	from user where user_id=#{userId}
+    	and pwd=#{pwd}
+    </select>
+	<select id="getAllUsers" resultType="User">
+		select <include refid="userColumns"/>
+		from user
+
+	</select>
+    <select id="getUsersByStaff" parameterType="string" resultType="User">
+    	select   u.user_id,u.position,u.pwd,u.name,u.gender,u.age,
+	u.tel,u.email,u.id_card,u.head_portrait,u.dept_no
+    	from user u 
+    	inner join staff s
+    	on u.user_id=s.user_id
+    	and s.project_id=#{projectId}
+    </select>
+    
+    <select id="getUserById" parameterType="string" resultType="User">
+    	select <include refid="userColumns"/>  
+    	from user where user_id=#{userId}
+    </select>
+    <select id="getBoss" resultType="User">
+    	select <include refid="userColumns"/>  
+    	from user where position='企业领导' limit 1
+    </select>
+    <select id="queryUsersByPosition" parameterType="string" resultType="User">
+    	select <include refid="userColumns"/>  
+    	from user where position=#{position}
+    </select>
+    <!-- 根据部门号查询本部门员工 -->
+    <select id="queryUsersByDept" parameterType="int" resultType="User">
+    	select <include refid="userColumns"/>  
+    	from user where dept_no=#{deptNo}
+    </select>
+    
+    <insert id="saveUser" parameterType="User">
+        insert  into user 
+        values (#{userId},#{position},#{pwd},#{name},#{gender},#{age}
+        ,#{tel},#{email},#{idCard},#{headPortrait},#{deptNo})
+    </insert>
+    
+    <select id="getAllDepts" resultType="Dept">
+    	select * from dept 
+    </select>
+    
+    <select id="getDeptById" parameterType="int" resultType="Dept">
+    	select * from dept where dept_no=#{deptNo}
+    </select>
+    
+    <update id="updateUser" parameterType="User">
+    	update user set head_portrait=#{headPortrait},pwd=#{pwd}
+    	where user_id=#{userId}
+    </update>
+</mapper>

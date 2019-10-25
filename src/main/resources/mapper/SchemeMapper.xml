@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.SchemeMapper" >
+	<!-- 这个元素可以被用来定义可重用的 SQL 代码段，可以包含在其他语句中-->
+	<sql id="schemeColumns">id,title,content,date,is_check,
+	is_pass,opinion,project_id,prepared_name,reviewed_name</sql>
+	<insert id="addScheme" parameterType="Scheme">
+		insert into scheme values
+		(#{id},#{title},#{content},#{date},#{isCheck},#{isPass},
+		#{opinion},#{projectId},#{preparedName},#{reviewedName})
+	</insert>
+    <select id="querySchemesByProjectId" parameterType="string" resultType="Scheme">
+   		select <include refid="schemeColumns"></include>
+   		from scheme
+   		where project_id=#{projectId}
+   		order by date desc
+    </select>
+    <select id="queryPassSchemes" parameterType="string" resultType="Scheme">
+   		select <include refid="schemeColumns"></include>
+   		from scheme
+   		where project_id=#{projectId}
+   		and is_pass="是"
+   		order by date desc
+    </select>
+    <select id="querySchemeById" parameterType="string" resultType="Scheme">
+   		select <include refid="schemeColumns"></include>
+   		from scheme
+   		where id=#{id}
+    </select>
+    <update id="updateScheme" parameterType="Scheme">
+    	update scheme
+    	set is_check="是",is_pass=#{isPass},opinion=#{opinion}
+    	where id=#{id}
+    </update>
+</mapper>

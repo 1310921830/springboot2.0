@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.MeetingMapper" >
+	<!-- 这个元素可以被用来定义可重用的 SQL 代码段，可以包含在其他语句中-->
+	<sql id="meetingColumns">id,title,date,site,minuted_by,
+	called_by,start_time,duration,aim,attenders,
+	materials,speaking_notes,decisions,scope,project_id,link</sql>
+	<insert id="addMeeting" parameterType="Meeting">
+		insert into meeting values
+		(#{id},#{title},#{date},#{site},#{minutedBy},#{calledBy},
+		#{startTime},#{duration},#{aim},#{attenders},#{materials},
+		#{speakingNotes},#{decisions},#{scope},#{projectId},#{link})
+	</insert>
+	<select id="queryMeetingsByProjectId" parameterType="string" resultType="Meeting">
+		select <include refid="meetingColumns"/>
+		from meeting
+		where project_id=#{projectId}
+		order by date desc
+	</select>
+	<select id="queryMeetingById" parameterType="string" resultType="Meeting">
+		select <include refid="meetingColumns"/>
+		from meeting
+		where id=#{id}
+	</select>
+    
+    
+</mapper>

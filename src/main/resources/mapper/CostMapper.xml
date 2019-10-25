@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.CostMapper" >
+	<!-- 这个元素可以被用来定义可重用的 SQL 代码段，可以包含在其他语句中-->
+	<sql id="costColumns">id,date,type,money,owner,
+	remark,project_id</sql>
+	<insert id="addCost" parameterType="Cost">
+		insert into cost values
+		(#{id},#{date},#{type},#{money},#{owner},
+		#{remark},#{projectId})
+	</insert>
+	<select id="queryCosts" parameterType="string" resultType="Cost">
+		select <include refid="costColumns"></include>
+		from cost
+		where project_id=#{projectId}
+		order by date desc  
+	</select>
+	<select id="queryCostsToDept" parameterType="string" resultType="Cost">
+		select <include refid="costColumns"></include>
+		from cost
+		where project_id=#{projectId}
+		and money>=200
+		order by date desc  
+	</select>
+    <select id="queryCostsToBoss" parameterType="string" resultType="Cost">
+		select <include refid="costColumns"></include>
+		from cost
+		where project_id=#{projectId}
+		and money>1000
+		order by date desc  
+	</select>
+	<select id="queryCostById" parameterType="string" resultType="Cost">
+		select <include refid="costColumns"></include>
+		from cost
+		where id=#{id}
+	</select>
+    <select id="querySumByWeek" parameterType="string" resultType="map">
+		select YEAR(date) year,weekofyear(date) week,sum(money) sum 
+		from cost
+		where project_id=#{projectId}
+		GROUP BY YEAR(date),weekofyear(date)
+	</select>
+	<select id="querySumByMonth" parameterType="string" resultType="map">
+		select YEAR(date) year,month(date) month,sum(money) sum 
+		from cost
+		where project_id=#{projectId} 
+		GROUP BY YEAR(date),month(date)
+	</select>
+	<select id="querySum" parameterType="string" resultType="map">
+		select sum(money) sum 
+		from cost
+		where project_id=#{projectId} 
+	</select>
+</mapper>

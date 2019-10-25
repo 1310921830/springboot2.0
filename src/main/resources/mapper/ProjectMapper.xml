@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.ProjectMapper" >
+	<!-- 这个元素可以被用来定义可重用的 SQL 代码段，可以包含在其他语句中-->
+	<sql id="projectColumns"> id,project_name,founder,established_time,
+	status,process,dept_manager_id,project_manager_id</sql>
+	
+    <select id="getAllProjects" resultType="Project">
+    	select <include refid="projectColumns"/>  
+    	from project
+    	order by established_time desc 
+    </select>
+    
+    <select id="getProjectsByDeptManagerId" parameterType="string" resultType="Project">
+    	select <include refid="projectColumns"/>  
+    	from project where dept_manager_id=#{deptManagerId}
+    	order by established_time desc 
+    </select>
+    
+    <select id="getProjectsByProjectManagerId" parameterType="string" resultType="Project">
+    	select <include refid="projectColumns"/>  
+    	from project where project_manager_id=#{projectManagerId}
+    	order by established_time desc 
+    </select>
+    <select id="getSomeProjects" parameterType="string" resultType="Project">
+    	select p.id,p.project_name,p.founder,p.established_time,
+    		p.status,p.dept_manager_id,p.project_manager_id 
+    	from project p
+		inner join staff s
+		on p.id=s.project_id
+		and s.user_id=#{userId}
+		order by p.established_time desc
+	</select>
+    <select id="getProjectById" parameterType="string" resultType="Project">
+    	select <include refid="projectColumns"/>  
+    	from project where id=#{id}
+    </select>
+    
+    <insert id="saveProject" parameterType="Project">
+        insert  into project 
+        values (#{id},#{projectName},#{founder},#{establishedTime},
+        #{status},#{process},#{deptManagerId},#{projectManagerId})
+    </insert>
+    <update id="updateProcess" parameterType="Project">
+    	update project
+    	set process=#{process}
+    	where id=#{id}
+    </update>
+    <update id="updateProject" parameterType="Project">
+    	update project
+    	set status=#{status}
+    	where id=#{id}
+    </update>
+</mapper>

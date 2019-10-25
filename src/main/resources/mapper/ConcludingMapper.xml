@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.ConcludingMapper" >
+	<!-- 这个元素可以被用来定义可重用的 SQL 代码段，可以包含在其他语句中-->
+	<sql id="cdColumns"> id,title,date,start_time,excepted_finish_date,
+	actual_finish_date,time_analysis,expected_expense,actual_expense,cost_analysis,except_deliverables,
+	actual_deliverables,undeliverables,deliverables_analysis,experience,
+	project_id,is_check,is_pass,opinion,link,prepared_name,reviewed_name</sql>
+	
+    
+    <select id="getConcludingByProjectId" parameterType="string" resultType="Concluding">
+    	select <include refid="cdColumns"></include>  
+    	from concluding where project_id=#{projectId} 
+    </select>
+    <select id="getConcludingById" parameterType="string" resultType="Concluding">
+    	select <include refid="cdColumns"></include>  
+    	from concluding where id=#{id} 
+    </select>
+    <insert id="addConcliuding" parameterType="Concluding">
+        insert  into concluding 
+        values (#{id},#{title},#{date},#{startTime},#{exceptedFinishDate},#{actualFinishDate},
+        #{timeAnalysis},#{expectedExpense},#{actualExpense},#{costAnalysis},#{exceptDeliverables},
+        #{actualDeliverables},#{undeliverables},#{deliverablesAnalysis},#{experience},#{projectId},
+        #{isCheck},#{isPass},#{opinion},#{link},#{preparedName},#{reviewedName})
+    </insert>
+    <update id="updateConcluding" parameterType="Concluding">
+    	update concluding set
+    	is_check='是',is_pass=#{isPass},opinion=#{opinion}
+    	where id=#{id}
+    </update>
+	<delete id="deleteConcluding" parameterType="string">
+		delete from concluding
+		where project_id=#{projectId} 
+	</delete>
+    
+    
+</mapper>

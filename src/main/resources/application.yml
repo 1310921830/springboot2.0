@@ -1,0 +1,50 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /demo
+spring:
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/yuantu?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+    driverClassName: com.mysql.jdbc.Driver
+    #    driverClassName: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  mvc:
+    view:
+      prefix: /WEB-INF/
+      suffix: .jsp
+  devtools:
+    restart:
+      enabled: true
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.example.demo.entity
+  configuration:
+    #开启驼峰功能
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+#  swagger地址
+swagger:
+  host: 127.0.0.1:8081
+#logging:
+  #level:
+   # com.njxnet.faqservice.mapper: DEBUG
+#config:
+  #baseFilePath: ///D:/file/HAINAN/
+  #pictureUrlPrefix: http://127.0.0.1:${server.port}/file/HAINAN/
+
+

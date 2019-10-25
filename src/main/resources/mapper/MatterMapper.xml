@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.MatterMapper" >
+	<!-- 这个元素可以被用来定义可重用的 SQL 代码段，可以包含在其他语句中-->
+	<sql id="matterColumns">id,title,type,content,date,is_check,
+	is_pass,opinion,project_id,prepared_name,reviewed_name</sql>
+	<insert id="addMatter" parameterType="BigMatter">
+		insert into big_matter values
+		(#{id},#{title},#{type},#{content},#{date},#{isCheck},
+		#{isPass},#{opinion},#{projectId},#{preparedName},#{reviewedName})
+	</insert>
+    <select id="queryMattersByProjectId" parameterType="string" resultType="BigMatter">
+   		select <include refid="matterColumns"></include>
+   		from big_matter
+   		where project_id=#{projectId}
+   		order by date desc
+    </select>
+    <select id="queryPassMatters" parameterType="string" resultType="BigMatter">
+   		select <include refid="matterColumns"></include>
+   		from big_matter
+   		where project_id=#{projectId}
+   		and is_pass='是'
+   		order by date desc
+    </select>
+    <select id="queryMatterById" parameterType="string" resultType="BigMatter">
+   		select <include refid="matterColumns"></include>
+   		from big_matter
+   		where id=#{id}
+   	</select>
+    <update id="updateMatter" parameterType="BigMatter">
+    	update big_matter
+    	set is_check="是",is_pass=#{isPass},opinion=#{opinion}
+    	where id=#{id} 
+    </update>
+</mapper>
