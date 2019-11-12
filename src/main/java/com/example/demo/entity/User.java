@@ -3,8 +3,6 @@ package com.example.demo.entity;
 public class User {
     private String userId;
 
-
-
     private String position;
 
     private String pwd;
